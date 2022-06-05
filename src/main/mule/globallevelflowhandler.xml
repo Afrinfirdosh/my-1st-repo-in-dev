@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="052b7958-96b3-4ad2-828d-c98e827fdcd5" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="4fd0fb73-6c93-447a-a860-2326da81f980" defaultErrorHandler-ref="globallevelflowhandlerError_Handler" />
+	<error-handler name="globallevelflowhandlerError_Handler" doc:id="b1a63e6d-c6d8-4114-940b-5404c2bf91c8" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="804ed7ea-8b59-4049-88f6-fd72bad2fc99" >
+			<logger level="INFO" doc:name="Logger" doc:id="486437ac-2094-4fde-a9aa-7bfdaed64d3c" />
+			<set-payload value="payload" doc:name="Set Payload" doc:id="2965dd51-aefc-41ff-8a8c-23e14b1a37cf" />
+		</on-error-continue>
+	</error-handler>
+	<flow name="globallevelflowhandlerFlow" doc:id="2f9b4331-2c72-4901-9521-6d7b3288ce4a" >
+		<http:listener doc:name="Listener" doc:id="8b64574f-5805-447d-95ad-a9c66739b038" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b56f4c86-aac1-496d-ace1-b81850698b5f" message="startflow"/>
+		<validation:is-null doc:id="8d04e705-5e80-49d8-bb92-d4983dc1be04" value="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="1659c8f0-97c3-4801-be1c-1dfbc053a82a" message="end flow"/>
+	</flow>
+</mule>
